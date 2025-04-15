@@ -19,7 +19,7 @@
     "scripting"
   ],
   "background": {
-    "service_worker": "src/storage.js",
+    "service_worker": "background.js",
     "type": "module"
   },
   "icons": {
