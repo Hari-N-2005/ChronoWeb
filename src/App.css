@@ -17,16 +17,17 @@
   }
   
   /* Extension-specific styles */
-  #root.extension {
-    width: 360px;
-    height: 480px;
+  .extension-mode {
+    width: 400px;
+    height: 600px;
     overflow: auto;
   }
   
   /* Development-specific styles */
-  #root.development {
+  .dev-mode {
     width: 100%;
     min-height: 100vh;
+    padding: 2rem;
   }
   
   .dashboard {
@@ -43,14 +44,14 @@
 
   /* Essential popup stability styles */
   html, body, #root, .app {
-    width: 360px;
-    height: 480px;
-    min-width: 360px;
-    min-height: 480px;
-    overflow: hidden;
     margin: 0;
     padding: 0;
-    position: fixed;
+    width: auto;
+    height: auto;
+    min-width: 400px;
+    min-height: 600px;
+    overflow: auto;
+    position: static;
   }
   
   /* Focus styles for the container */

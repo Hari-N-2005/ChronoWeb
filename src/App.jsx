@@ -63,9 +63,12 @@ function App() {
     return () => console.log('Popup unmounted');
   }, [])
 
+  // Determine environment class
+  const environmentClass = (typeof chrome !== 'undefined' && chrome.runtime?.id) ? 'extension-mode' : 'dev-mode'
+
   return (
     <div 
-      className={`app ${darkMode ? 'dark' : 'light'}`} 
+      className={`app ${environmentClass} ${darkMode ? 'dark' : 'light'}`} 
       ref={popupRef}
       tabIndex="0" // Make div focusable
       onBlur={() => {
