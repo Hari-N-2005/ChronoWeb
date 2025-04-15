@@ -18,8 +18,8 @@
   
   /* Extension-specific styles */
   #root.extension {
-    width: 400px;
-    height: 600px;
+    width: 360px;
+    height: 480px;
     overflow: auto;
   }
   
@@ -42,11 +42,11 @@
   }
 
   /* Essential popup stability styles */
-html, body, #root, .app {
-    width: 400px !important;
-    height: 600px !important;
-    min-width: 400px !important;
-    min-height: 600px !important;
+  html, body, #root, .app {
+    width: 360px;
+    height: 480px;
+    min-width: 360px;
+    min-height: 480px;
     overflow: hidden;
     margin: 0;
     padding: 0;
