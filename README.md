@@ -26,10 +26,10 @@ A Chrome extension that tracks your browsing activity and visualizes time spent 
    ```npm run build```
 3. Load into Chrome:
 
-   i.   Go to ```chrome://extensions```.
-   ii.  Enable "Developer mode".
-   iii. Click "Load unpacked".
-   iv.  Select the dist folder.
+   i.   Go to ```chrome://extensions```   
+   ii.  Enable "Developer mode"   
+   iii. Click "Load unpacked"   
+   iv.  Select the dist folder   
 
 ## 🛠️ Technologies Used
 
