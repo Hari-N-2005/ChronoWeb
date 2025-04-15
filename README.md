@@ -15,18 +15,18 @@ A Chrome extension that tracks your browsing activity and visualizes time spent 
 ### Development
 
 1. Clone the repository:
-     git clone https://github.com/yourusername/website-tracker-extension.git
+     ```git clone https://github.com/yourusername/website-tracker-extension.git```
 2. Install dependencies
-     npm install
+     ```npm install```
 3. Run development server
-     npm run dev
+     ```npm run dev```
 
 ### Production
 1. Build the extension
-    npm run build
-2. Load into Chrome:
+   ```npm run build```
+3. Load into Chrome:
 
-   i.   Go to chrome://extensions
+   i.   Go to ```chrome://extensions```
    ii.  Enable "Developer mode"
    iii. Click "Load unpacked"
    iv.  Select the dist folder
