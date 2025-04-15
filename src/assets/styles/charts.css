@@ -1,0 +1,26 @@
+.chart-container {
+    margin: 20px 0;
+    display: flex;
+    justify-content: center;
+  }
+  
+  .chart-controls {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    margin-bottom: 10px;
+  }
+  
+  .chart-controls button {
+    padding: 5px 15px;
+    border: 1px solid var(--primary-color);
+    background: transparent;
+    color: var(--primary-color);
+    border-radius: 4px;
+    cursor: pointer;
+  }
+  
+  .chart-controls button.active {
+    background: var(--primary-color);
+    color: white;
+  }

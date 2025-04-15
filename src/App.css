@@ -1,0 +1,17 @@
+.app {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+  }
+  
+  .dashboard {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .stats-row {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 20px;
+  }
