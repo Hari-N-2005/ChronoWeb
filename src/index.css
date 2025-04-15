@@ -38,3 +38,20 @@ html, body {
   height: 600px;
   overflow: auto;
 }
+
+/* src/index.css */
+.extension-mode {
+  width: 400px;
+  height: 600px;
+}
+
+.dev-mode {
+  width: 100%;
+  min-height: 100vh;
+  padding: 2rem;
+}
+
+/* When in dev server */
+body.development {
+  background: #f0f0f0;
+}

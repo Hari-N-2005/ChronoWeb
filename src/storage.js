@@ -2,6 +2,7 @@
 let activeTab = null
 let startTime = null
 let currentDomain = null
+let popupWindowId = null;
 
 // Listen for tab changes
 chrome.tabs.onActivated.addListener(activeInfo => {
@@ -16,6 +17,24 @@ chrome.tabs.onUpdated.addListener((tabId, changeInfo, tab) => {
     updateActiveTab(tab)
   }
 })
+
+chrome.windows?.onFocusChanged?.addListener((windowId) => {
+  if (windowId !== chrome.windows.WINDOW_ID_NONE && popupWindowId === windowId) {
+    chrome.windows.update(windowId, { focused: true });
+  }
+});
+
+chrome.runtime.onConnect.addListener((port) => {
+  if (port.name === "popup") {
+    port.onDisconnect.addListener(() => {
+      popupWindowId = null;
+    });
+    
+    chrome.windows.getCurrent((window) => {
+      popupWindowId = window.id;
+    });
+  }
+});
 
 // Update the active tab and track time
 function updateActiveTab(tab) {
