@@ -22,5 +22,5 @@
   
   .chart-controls button.active {
     background: var(--primary-color);
-    color: white;
+    color: yellow;
   }
