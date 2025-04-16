@@ -15,8 +15,10 @@
     "storage",
     "tabs",
     "alarms",
-    "activeTab",
     "scripting"
+  ],
+  "host_permissions": [
+    "<all_urls>"
   ],
   "background": {
     "service_worker": "background.js",
