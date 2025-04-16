@@ -1,7 +1,6 @@
 .domain-list {
-    margin-top: 20px;
     border-top: 1px solid #ddd;
-    padding-top: 20px;
+    margin: 10px;
   }
   
   .domain-list h3 {

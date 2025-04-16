@@ -36,3 +36,59 @@
     background: transparent !important;
     color: inherit !important;
   }
+  
+  /* Light Mode Variables */
+  body.light-mode {
+    --header-bg: #ffffff;
+    --header-text: #333333;
+    --header-border: #ccc;
+  }
+
+  /* Dark Mode Variables */
+  body.dark-mode {
+    --header-bg: #1a1a2e;
+    --header-text: #f0f0f0;
+    --header-border: #2e2e3e;
+  }
+
+  .clean-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 16px;
+    background-color: var(--header-bg);
+    border-bottom: 1px solid var(--header-border);
+    transition: background-color 0.3s ease, border-color 0.3s ease;
+  }
+  
+  .header-title {
+    font-size: 1.25rem;
+    font-weight: bold;
+    color: var(--header-text);
+    transition: color 0.3s ease;
+  }
+  
+  .header-actions {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+  
+  .nav-button {
+    background: none;
+    border: none;
+    color: var(--header-text);
+    font-size: 0.95rem;
+    cursor: pointer;
+    padding: 4px 8px;
+    border-radius: 4px;
+    transition: color 0.3s ease, background-color 0.3s ease;
+  }
+  
+  .nav-button:hover {
+    background-color: rgba(255, 255, 255, 0.05);
+  }
+
+  body.dark-mode .nav-button:hover {
+    background-color: rgba(255, 255, 255, 0.1);
+  }

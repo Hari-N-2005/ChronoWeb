@@ -25,9 +25,9 @@
   
   /* Development-specific styles */
   .dev-mode {
-    width: 100%;
-    min-height: 100vh;
-    padding: 2rem;
+    width: 400px;
+    min-height: 600px;
+    overflow: auto
   }
   
   .dashboard {
