@@ -1,5 +1,5 @@
 export const DEFAULT_SETTINGS = {
-    darkMode: false,
+    darkMode: true,
     trackInterval: 60, // seconds
     maxDomainsToShow: 10
   }

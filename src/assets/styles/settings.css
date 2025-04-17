@@ -27,5 +27,5 @@
   }
   
   .setting-item button:hover {
-    background: var(--secondary-color);
+    background:rgba(187, 39, 2, 0.534);
   }

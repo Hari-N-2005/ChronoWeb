@@ -16,6 +16,13 @@
   --card-bg: #16213e;
 }
 
+/* Box-sizing fix to ensure borders are included in width/height */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
 /* Core styles */
 body {
   margin: 0;
@@ -41,16 +48,19 @@ html, body {
   overflow: auto;
 }
 
-/* src/index.css */
+/* Extension and development mode */
 .extension-mode {
   width: 400px;
   height: 600px;
+  border: solid 10px rgb(3, 85, 67);
+  box-sizing: border-box;
 }
 
 .dev-mode {
   width: 400px;
   height: 600px;
-  padding: 2rem;
+  padding: 0rem;
+  border: solid 10px rgb(3, 85, 67);
 }
 
 /* When in dev server */

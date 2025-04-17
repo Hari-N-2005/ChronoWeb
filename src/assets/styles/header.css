@@ -1,11 +1,44 @@
-.app-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 10px 0;
-    border-bottom: 1px solid #ddd;
-    margin-bottom: 20px;
-  }
+/* New elegant stacked header layout */
+.app-header-stacked {
+  display: flex;
+  flex-direction: column;
+  padding: 0;
+  background-color: var(--header-bg);
+  border-bottom: 5px solid var(--header-border);
+  transition: background-color 0.3s ease;
+}
+
+.header-top-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 16px;
+}
+
+.header-bottom-row {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  padding: 6px 0 10px;
+  border-top: 5px solid var(--header-border);
+}
+
+.header-icon {
+  width: 24px;
+  height: 24px;
+}
+
+.header-title {
+  font-size: 1.2rem;
+  font-weight: bold;
+  color: var(--header-text);
+  text-align: center;
+  flex: 1;
+  margin: 0 10px;
+}
+
+/* Retain existing button and theme-toggle styles */
+
   
   .app-header h1 {
     margin: 0;
@@ -27,15 +60,20 @@
     cursor: pointer;
   }
   
-  .app-header button:hover {
-    background: var(--secondary-color);
-  }
-  
   .theme-toggle {
     font-size: 1.2rem;
-    background: transparent !important;
-    color: inherit !important;
+    background: none;
+    border: none;
+    color: var(--header-text);
+    cursor: pointer;
+    padding: 6px;
+    transition: transform 0.2s ease;
   }
+  
+  .theme-toggle:hover {
+    transform: scale(1.1);
+  }
+  
   
   /* Light Mode Variables */
   body.light-mode {
