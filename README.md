@@ -1,4 +1,4 @@
-# Website Tracker Extension
+# ChronoWeb 
 
 A Chrome extension that tracks your browsing activity and visualizes time spent on different websites using interactive charts.
 
