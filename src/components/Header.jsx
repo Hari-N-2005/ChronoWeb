@@ -6,7 +6,7 @@ const Header = ({ onViewChange, darkMode, toggleDarkMode }) => {
     <header className="app-header-stacked">
       <div className="header-top-row">
         <img src={icon} alt="Tracker Icon" className="header-icon" />
-        <h1 className="header-title">Website Tracker</h1>
+        <h1 className="header-title">ChronoWeb</h1>
         <button onClick={toggleDarkMode} className="theme-toggle">
           {darkMode ? '☀️' : '🌙'}
         </button>

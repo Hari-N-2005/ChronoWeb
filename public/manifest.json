@@ -1,6 +1,6 @@
 {
   "manifest_version": 3,
-  "name": "Website Tracker",
+  "name": "ChronoWeb",
   "version": "1.0",
   "description": "Track your website activity and visualize time spent",
   "action": {
