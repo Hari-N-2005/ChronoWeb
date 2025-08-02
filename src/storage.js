@@ -1,116 +1,186 @@
-// Background script to track website activity
-let activeTab = null;
+// A more robust background script for tracking website activity accurately.
+
+// Tracking state
+let activeTabId = null;
+let activeDomain = null;
 let startTime = null;
-let currentDomain = null;
-let popupWindowId = null;
-let intervalId = null; // Heartbeat timer
+let trackingInterval = null; // The ID of our setInterval timer
 
-// Listen for tab changes
-chrome.tabs.onActivated.addListener(activeInfo => {
-  chrome.tabs.get(activeInfo.tabId, tab => {
-    updateActiveTab(tab);
-  });
-});
+// Constants
+const HEARTBEAT_INTERVAL_SECONDS = 5;
 
-// Listen for tab updates
-chrome.tabs.onUpdated.addListener((tabId, changeInfo, tab) => {
-  if (tab.active && changeInfo.status === 'complete') {
-    updateActiveTab(tab);
+// --- Core Tracking Logic ---
+
+/**
+ * Starts the time tracking interval.
+ * Checks if tracking is already running to avoid multiple intervals.
+ */
+function startTracking() {
+  if (trackingInterval) {
+    // Already tracking, do nothing.
+    return;
   }
-});
+  console.log("Starting tracking...");
 
-// Listen for focus changes to ensure popup stays focused
-chrome.windows?.onFocusChanged?.addListener((windowId) => {
-  if (windowId !== chrome.windows.WINDOW_ID_NONE && popupWindowId === windowId) {
-    chrome.windows.update(windowId, { focused: true });
-  } else if (windowId === chrome.windows.WINDOW_ID_NONE) {
-    clearInterval(intervalId); // Stop tracking if window is unfocused
-  }
-});
+  // Set start time immediately
+  startTime = Date.now();
 
-// Listen for popup connections
-chrome.runtime.onConnect.addListener((port) => {
-  if (port.name === "popup") {
-    port.onDisconnect.addListener(() => {
-      popupWindowId = null;
-    });
-
-    chrome.windows.getCurrent((window) => {
-      popupWindowId = window.id;
-    });
-  }
-});
-
-// Update the active tab and track time
-function updateActiveTab(tab) {
-  const now = Date.now();
-
-  if (activeTab && startTime && currentDomain) {
-    const timeSpent = Math.floor((now - startTime) / 1000);
-
-    if (timeSpent > 0) {
-      chrome.storage.local.get(['websiteActivity'], result => {
-        const activity = result.websiteActivity || {};
-        activity[currentDomain] = (activity[currentDomain] || 0) + timeSpent;
-
-        chrome.storage.local.set({ websiteActivity: activity });
-      });
-    }
-  }
-
-  activeTab = tab.id;
-  startTime = now;
-  currentDomain = getDomain(tab.url);
-
-  startTracking(); // Start the heartbeat timer
+  trackingInterval = setInterval(() => {
+    // This function will be called every few seconds to save the time.
+    saveTime();
+  }, HEARTBEAT_INTERVAL_SECONDS * 1000);
 }
 
-// Extract domain from URL
+/**
+ * Stops the time tracking interval and saves any remaining time.
+ */
+function stopTracking() {
+  if (!trackingInterval) {
+    // Already stopped, do nothing.
+    return;
+  }
+  console.log("Stopping tracking...");
+
+  // Save any remaining time since the last heartbeat
+  saveTime();
+
+  clearInterval(trackingInterval);
+  trackingInterval = null;
+  startTime = null;
+}
+
+/**
+ * Calculates time spent since startTime and saves it to storage.
+ * Resets the startTime for the next interval.
+ */
+function saveTime() {
+  if (!startTime || !activeDomain) {
+    return;
+  }
+
+  const now = Date.now();
+  const timeSpentSeconds = Math.floor((now - startTime) / 1000);
+
+  if (timeSpentSeconds > 0) {
+    console.log(`Saving ${timeSpentSeconds}s for ${activeDomain}`);
+    chrome.storage.local.get(['websiteActivity'], (result) => {
+      const activity = result.websiteActivity || {};
+      activity[activeDomain] = (activity[activeDomain] || 0) + timeSpentSeconds;
+      chrome.storage.local.set({ websiteActivity: activity });
+    });
+  }
+
+  // Reset start time for the next interval
+  startTime = now;
+}
+
+// --- Event Handlers ---
+
+/**
+ * Handles a change in the active tab.
+ * Stops previous tracking and starts new tracking if the tab is valid.
+ * @param {chrome.tabs.Tab} tab The new active tab.
+ */
+function handleTabChange(tab) {
+  // Always stop the previous timer before starting a new one
+  stopTracking();
+
+  if (tab && tab.id && tab.url) {
+    activeTabId = tab.id;
+    activeDomain = getDomain(tab.url);
+
+    // If the new domain is valid, start tracking immediately,
+    // but only if the window is focused and the user is active.
+    // We'll check the state to decide whether to start.
+    checkSystemState();
+  } else {
+    activeTabId = null;
+    activeDomain = null;
+  }
+}
+
+/**
+ * Checks the window focus and idle state to determine if tracking should be active.
+ */
+function checkSystemState() {
+    // Set the detection interval to 15 seconds, as specified in the chrome.idle API docs.
+    chrome.idle.setDetectionInterval(15);
+  chrome.idle.queryState(15, (idleState) => {
+    chrome.windows.getCurrent((currentWindow) => {
+      // Start tracking only if the user is active and the window is focused.
+      if (idleState === 'active' && currentWindow.focused) {
+        startTracking();
+      } else {
+        stopTracking();
+      }
+    });
+  });
+}
+
+// --- Utility Functions ---
+
+/**
+ * Extracts a clean domain name from a URL.
+ * @param {string} url The URL to parse.
+ * @returns {string} The extracted domain name.
+ */
 function getDomain(url) {
-  if (!url) return 'unknown';
+  if (!url || !url.startsWith('http')) {
+    return 'unknown';
+  }
   try {
-    const domain = new URL(url).hostname.replace('www.', '');
-    return domain || 'unknown';
-  } catch {
+    return new URL(url).hostname.replace(/^www\./, '');
+  } catch (e) {
+    console.error(`Could not parse URL: ${url}`, e);
     return 'unknown';
   }
 }
 
-// Start continuous tracking (heartbeat every 5 seconds)
-function startTracking() {
-  if (intervalId) clearInterval(intervalId);
+// --- Chrome API Event Listeners ---
 
-  intervalId = setInterval(() => {
-    if (!activeTab || !currentDomain || !startTime) return;
-
-    const now = Date.now();
-    const timeSpent = Math.floor((now - startTime) / 1000);
-
-    if (timeSpent > 0) {
-      chrome.storage.local.get(['websiteActivity'], result => {
-        const activity = result.websiteActivity || {};
-        activity[currentDomain] = (activity[currentDomain] || 0) + timeSpent;
-        chrome.storage.local.set({ websiteActivity: activity });
-        startTime = now; // reset
-      });
+// Fired when the active tab in a window changes.
+chrome.tabs.onActivated.addListener((activeInfo) => {
+  chrome.tabs.get(activeInfo.tabId, (tab) => {
+    if (chrome.runtime.lastError) {
+        console.log(chrome.runtime.lastError.message);
+    } else {
+        handleTabChange(tab);
     }
-  }, 5000); // Every 5 seconds
-}
+  });
+});
 
-// Backup interval via chrome.alarms every 1 minute
-chrome.alarms.create('saveActivity', { periodInMinutes: 1 });
-chrome.alarms.onAlarm.addListener(alarm => {
-  if (alarm.name === 'saveActivity' && activeTab && startTime && currentDomain) {
-    const now = Date.now();
-    const timeSpent = Math.floor((now - startTime) / 1000);
-
-    if (timeSpent > 0) {
-      chrome.storage.local.get(['websiteActivity'], result => {
-        const activity = result.websiteActivity || {};
-        activity[currentDomain] = (activity[currentDomain] || 0) + timeSpent;
-        chrome.storage.local.set({ websiteActivity: activity });
-        startTime = now;
-      });
+// Fired when a tab is updated.
+chrome.tabs.onUpdated.addListener((tabId, changeInfo, tab) => {
+    // We only care about the active tab, and only when it's finished loading.
+    if (tab.active && changeInfo.status === 'complete') {
+        handleTabChange(tab);
     }
+});
+
+// Fired when the focused window changes.
+chrome.windows.onFocusChanged.addListener((windowId) => {
+  checkSystemState();
+});
+
+// Fired when the user's idle state changes.
+chrome.idle.onStateChanged.addListener((newState) => {
+  console.log(`Idle state changed to: ${newState}`);
+  if (newState === 'active') {
+    // User is active again, resume tracking if a window is focused.
+    checkSystemState();
+  } else {
+    // User is idle or screen is locked, pause tracking.
+    stopTracking();
   }
+});
+
+// --- Initialization ---
+
+// Perform an initial check when the extension starts up.
+console.log("Background script loaded.");
+// Get the currently active tab to initialize the state.
+chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
+    if (tabs.length > 0) {
+        handleTabChange(tabs[0]);
+    }
 });
