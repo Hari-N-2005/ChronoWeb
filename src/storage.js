@@ -5,6 +5,7 @@ let activeTabId = null;
 let activeDomain = null;
 let startTime = null;
 let trackingInterval = null; // The ID of our setInterval timer
+let isMediaPlaying = false;   // New state for media playback
 
 // Constants
 const HEARTBEAT_INTERVAL_SECONDS = 5;
@@ -17,18 +18,11 @@ const HEARTBEAT_INTERVAL_SECONDS = 5;
  */
 function startTracking() {
   if (trackingInterval) {
-    // Already tracking, do nothing.
     return;
   }
   console.log("Starting tracking...");
-
-  // Set start time immediately
   startTime = Date.now();
-
-  trackingInterval = setInterval(() => {
-    // This function will be called every few seconds to save the time.
-    saveTime();
-  }, HEARTBEAT_INTERVAL_SECONDS * 1000);
+  trackingInterval = setInterval(saveTime, HEARTBEAT_INTERVAL_SECONDS * 1000);
 }
 
 /**
@@ -36,14 +30,10 @@ function startTracking() {
  */
 function stopTracking() {
   if (!trackingInterval) {
-    // Already stopped, do nothing.
     return;
   }
   console.log("Stopping tracking...");
-
-  // Save any remaining time since the last heartbeat
   saveTime();
-
   clearInterval(trackingInterval);
   trackingInterval = null;
   startTime = null;
@@ -57,10 +47,8 @@ function saveTime() {
   if (!startTime || !activeDomain) {
     return;
   }
-
   const now = Date.now();
   const timeSpentSeconds = Math.floor((now - startTime) / 1000);
-
   if (timeSpentSeconds > 0) {
     console.log(`Saving ${timeSpentSeconds}s for ${activeDomain}`);
     chrome.storage.local.get(['websiteActivity'], (result) => {
@@ -69,8 +57,6 @@ function saveTime() {
       chrome.storage.local.set({ websiteActivity: activity });
     });
   }
-
-  // Reset start time for the next interval
   startTime = now;
 }
 
@@ -82,16 +68,10 @@ function saveTime() {
  * @param {chrome.tabs.Tab} tab The new active tab.
  */
 function handleTabChange(tab) {
-  // Always stop the previous timer before starting a new one
   stopTracking();
-
   if (tab && tab.id && tab.url) {
     activeTabId = tab.id;
     activeDomain = getDomain(tab.url);
-
-    // If the new domain is valid, start tracking immediately,
-    // but only if the window is focused and the user is active.
-    // We'll check the state to decide whether to start.
     checkSystemState();
   } else {
     activeTabId = null;
@@ -100,15 +80,15 @@ function handleTabChange(tab) {
 }
 
 /**
- * Checks the window focus and idle state to determine if tracking should be active.
+ * Checks window focus, idle state, and media playback to determine if tracking should be active.
  */
 function checkSystemState() {
-    // Set the detection interval to 120 seconds.
-    chrome.idle.setDetectionInterval(120);
   chrome.idle.queryState(120, (idleState) => {
     chrome.windows.getCurrent((currentWindow) => {
-      // Start tracking only if the user is active and the window is focused.
-      if (idleState === 'active' && currentWindow.focused) {
+      // Track if (user is active AND window is focused) OR (media is playing).
+      const shouldBeTracking = (idleState === 'active' && currentWindow.focused) || isMediaPlaying;
+
+      if (shouldBeTracking) {
         startTracking();
       } else {
         stopTracking();
@@ -138,49 +118,52 @@ function getDomain(url) {
 
 // --- Chrome API Event Listeners ---
 
-// Fired when the active tab in a window changes.
 chrome.tabs.onActivated.addListener((activeInfo) => {
   chrome.tabs.get(activeInfo.tabId, (tab) => {
-    if (chrome.runtime.lastError) {
-        console.log(chrome.runtime.lastError.message);
-    } else {
-        handleTabChange(tab);
+    if (!chrome.runtime.lastError) {
+      handleTabChange(tab);
     }
   });
 });
 
-// Fired when a tab is updated.
 chrome.tabs.onUpdated.addListener((tabId, changeInfo, tab) => {
-    // We only care about the active tab, and only when it's finished loading.
-    if (tab.active && changeInfo.status === 'complete') {
-        handleTabChange(tab);
-    }
+  if (tab.active && changeInfo.status === 'complete') {
+    handleTabChange(tab);
+  }
 });
 
-// Fired when the focused window changes.
 chrome.windows.onFocusChanged.addListener((windowId) => {
   checkSystemState();
 });
 
-// Fired when the user's idle state changes.
 chrome.idle.onStateChanged.addListener((newState) => {
   console.log(`Idle state changed to: ${newState}`);
-  if (newState === 'active') {
-    // User is active again, resume tracking if a window is focused.
-    checkSystemState();
-  } else {
-    // User is idle or screen is locked, pause tracking.
-    stopTracking();
+  checkSystemState(); // Re-evaluate tracking state whenever idle state changes
+});
+
+// Listen for messages from content scripts
+chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
+  if (message.type === 'MEDIA_PLAYBACK_STATE') {
+    console.log('Received media state:', message.state);
+    const wasMediaPlaying = isMediaPlaying;
+    isMediaPlaying = message.state === 'PLAYING';
+
+    // If the media state changed, we need to re-evaluate our tracking state.
+    if (wasMediaPlaying !== isMediaPlaying) {
+      checkSystemState();
+    }
   }
 });
 
+
 // --- Initialization ---
 
-// Perform an initial check when the extension starts up.
+// Set the detection interval once when the script starts.
+chrome.idle.setDetectionInterval(60);
+
 console.log("Background script loaded.");
-// Get the currently active tab to initialize the state.
 chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
-    if (tabs.length > 0) {
-        handleTabChange(tabs[0]);
-    }
+  if (tabs.length > 0) {
+    handleTabChange(tabs[0]);
+  }
 });
