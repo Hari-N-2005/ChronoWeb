@@ -1,73 +1,132 @@
-/*
-  ChronoWeb - Header Styles
-*/
-.app-header {
-  padding: var(--space-3) var(--space-4);
-  background-color: var(--background-primary);
-  border-bottom: 1px solid var(--border-color);
-  transition: background-color 0.3s ease, border-color 0.3s ease;
-  flex-shrink: 0; /* Prevent header from shrinking */
+/* New elegant stacked header layout */
+.app-header-stacked {
+  display: flex;
+  flex-direction: column;
+  padding: 0;
+  background-color: var(--header-bg);
+  border-bottom: 5px solid var(--header-border);
+  transition: background-color 0.3s ease;
 }
 
-.header-content {
+.header-top-row {
   display: flex;
+  justify-content: space-between;
   align-items: center;
-  gap: var(--space-3);
-  width: 100%;
+  padding: 10px 16px;
+}
+
+.header-bottom-row {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  padding: 6px 0 10px;
+  border-top: 5px solid var(--header-border);
 }
 
 .header-icon {
-  width: 28px;
-  height: 28px;
+  width: 24px;
+  height: 24px;
 }
 
 .header-title {
-  font-size: var(--font-size-lg);
-  font-weight: 600;
-  color: var(--text-primary);
-  margin: 0;
-  margin-right: auto; /* Push everything else to the right */
+  font-size: 1.2rem;
+  font-weight: bold;
+  color: var(--header-text);
+  text-align: center;
+  flex: 1;
+  margin: 0 10px;
 }
 
-.header-actions {
-  display: flex;
-  align-items: center;
-  gap: var(--space-2);
-}
+/* Retain existing button and theme-toggle styles */
 
-.nav-button {
-  background: none;
-  border: none;
-  font-family: var(--font-family-sans);
-  font-size: var(--font-size-sm);
-  color: var(--text-secondary);
-  cursor: pointer;
-  padding: var(--space-2);
-  border-radius: var(--border-radius-sm);
-  transition: color 0.2s ease, background-color 0.2s ease;
-}
+  
+  .app-header h1 {
+    margin: 0;
+    font-size: 1.5rem;
+    color: var(--primary-color);
+  }
+  
+  .app-header nav {
+    display: flex;
+    gap: 10px;
+  }
+  
+  .app-header button {
+    padding: 5px 10px;
+    border: none;
+    background: var(--primary-color);
+    color: var(--primary-color);
+    border-radius: 4px;
+    cursor: pointer;
+  }
+  
+  .theme-toggle {
+    font-size: 1.2rem;
+    background: none;
+    border: none;
+    color: var(--header-text);
+    cursor: pointer;
+    padding: 6px;
+    transition: transform 0.2s ease;
+  }
+  
+  .theme-toggle:hover {
+    transform: scale(1.1);
+  }
+  
+  
+  /* Light Mode Variables */
+  body.light-mode {
+    --header-bg: #ffffff;
+    --header-text: #333333;
+    --header-border: #ccc;
+  }
 
-.nav-button:hover {
-  color: var(--text-primary);
-  background-color: var(--background-secondary);
-}
+  /* Dark Mode Variables */
+  body.dark-mode {
+    --header-bg: #1a1a2e;
+    --header-text: #f0f0f0;
+    --header-border: #2e2e3e;
+  }
 
-.theme-toggle {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: var(--font-size-lg);
-  background: none;
-  border: none;
-  color: var(--text-secondary);
-  cursor: pointer;
-  padding: var(--space-2);
-  border-radius: var(--border-radius-sm);
-  transition: color 0.2s ease, background-color 0.2s ease, transform 0.2s ease;
-}
+  .clean-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 16px;
+    background-color: var(--header-bg);
+    border-bottom: 1px solid var(--header-border);
+    transition: background-color 0.3s ease, border-color 0.3s ease;
+  }
+  
+  .header-title {
+    font-size: 1.25rem;
+    font-weight: bold;
+    color: var(--header-text);
+    transition: color 0.3s ease;
+  }
+  
+  .header-actions {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+  
+  .nav-button {
+    background: none;
+    border: none;
+    color: var(--header-text);
+    font-size: 0.95rem;
+    cursor: pointer;
+    padding: 4px 8px;
+    border-radius: 4px;
+    transition: color 0.3s ease, background-color 0.3s ease;
+  }
+  
+  .nav-button:hover {
+    background-color: rgba(255, 255, 255, 0.05);
+  }
 
-.theme-toggle:hover {
-  color: var(--text-primary);
-  background-color: var(--background-secondary);
-  transform: scale(1.1);
-}
+  body.dark-mode .nav-button:hover {
+    background-color: rgba(255, 255, 255, 0.1);
+  }

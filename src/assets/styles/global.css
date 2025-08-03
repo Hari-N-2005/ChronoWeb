@@ -1,64 +1,38 @@
-/*
-  ChronoWeb - Global Stylesheet
-*/
-
-/*
-  1. Import the new design system.
-     This makes all our theme variables available globally.
-*/
-@import './theme.css';
-
-/*
-  2. Apply a default font and box-sizing model.
-     - 'border-box' makes layout math more intuitive.
-     - We use our theme variable for the font family.
-*/
-* {
-  box-sizing: border-box;
-}
-
-/*
-  3. Set up the base body and theme styles.
-     - The body will have a smooth transition for color changes.
-     - The .light-mode and .dark-mode classes from our theme
-       are applied here to set the base colors.
-*/
-body {
-  margin: 0;
-  font-family: var(--font-family-sans);
-  font-size: var(--font-size-base);
-  transition: background-color 0.3s ease, color 0.3s ease;
-}
-
-body.light-mode {
-  background-color: var(--background-secondary);
-  color: var(--text-primary);
-}
-
-body.dark-mode {
-  background-color: var(--background-primary);
-  color: var(--text-primary);
-}
-
-/*
-  4. Define the main app container dimensions.
-     This ensures the extension popup has a consistent size.
-*/
-.app {
-  width: 400px; /* A slightly narrower, more modern width */
-  min-height: 550px;
-  display: flex;
-  flex-direction: column;
-  background-color: var(--background-primary);
-}
-
-/*
-  5. A simple, centered loading message style.
-*/
-.loading {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  flex-grow: 1;
-  color: var(--text-secondary);
-}
+:root {
+    --primary-color: #4a6fa5;
+    --secondary-color: #166088;
+    --background-light: #f8f9fa;
+    --text-light: #333;
+    --background-dark: #1a1a2e;
+    --text-dark: #f1f1f1;
+  }
+  
+  body {
+    margin: 0;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    transition: background-color 0.3s, color 0.3s;
+  }
+  
+  .light-mode {
+    background-color: var(--background-light);
+    color: var(--text-light);
+  }
+  
+  .dark-mode {
+    background-color: var(--background-dark);
+    color: var(--text-dark);
+  }
+  
+  .app {
+    width: 500px;
+    min-height: 600px;
+    padding: 20px;
+    box-sizing: border-box;
+  }
+  
+  .loading {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+  }

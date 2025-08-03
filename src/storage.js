@@ -83,7 +83,7 @@ function handleTabChange(tab) {
  * Checks window focus, idle state, and media playback to determine if tracking should be active.
  */
 function checkSystemState() {
-  chrome.idle.queryState(60, (idleState) => {
+  chrome.idle.queryState(120, (idleState) => {
     chrome.windows.getCurrent((currentWindow) => {
       // Track if (user is active AND window is focused) OR (media is playing).
       const shouldBeTracking = (idleState === 'active' && currentWindow.focused) || isMediaPlaying;
