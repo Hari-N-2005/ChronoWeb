@@ -1,0 +1,83 @@
+/*
+  ChronoWeb - Central Theme File
+  Defines the design system for the extension.
+*/
+
+:root {
+  /*
+    Primary Palette: A modern, cool-toned palette.
+    - Brand: A strong, vibrant blue for primary actions and highlights.
+    - Accent: A complementary color for secondary elements or highlights.
+    - Success/Error: Standard colors for user feedback.
+  */
+  --color-brand: #007aff; /* A vibrant, modern blue */
+  --color-accent: #ff9500; /* A warm, energetic orange */
+  --color-success: #34c759;
+  --color-error: #ff3b30;
+
+  /*
+    Neutral Palette (Grays): Provides depth and structure.
+    - Used for backgrounds, borders, and text.
+    - A range from near-white to near-black.
+  */
+  --neutral-0: #ffffff;
+  --neutral-100: #f0f2f5; /* Lightest background */
+  --neutral-200: #e5e7eb; /* Borders, dividers */
+  --neutral-300: #d1d5db;
+  --neutral-700: #374151; /* Secondary text */
+  --neutral-800: #1f2937; /* Primary text */
+  --neutral-900: #111827; /* Darkest background */
+
+  /*
+    Typography: A clean, sans-serif font stack.
+  */
+  --font-family-sans: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji';
+  --font-size-sm: 0.875rem; /* 14px */
+  --font-size-base: 1rem;     /* 16px */
+  --font-size-lg: 1.125rem;  /* 18px */
+  --font-size-xl: 1.25rem;   /* 20px */
+
+  /*
+    Layout & Spacing: A consistent scale for padding, margins, etc.
+    - Based on a 4px grid system.
+  */
+  --space-1: 0.25rem; /* 4px */
+  --space-2: 0.5rem;  /* 8px */
+  --space-3: 0.75rem; /* 12px */
+  --space-4: 1rem;    /* 16px */
+  --space-6: 1.5rem;  /* 24px */
+  --space-8: 2rem;    /* 32px */
+
+  /*
+    Borders & Shadows: For creating depth and separating elements.
+  */
+  --border-radius-sm: 4px;
+  --border-radius-md: 8px;
+  --border-radius-lg: 16px;
+  --box-shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+  --box-shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+}
+
+/*
+  Light Mode Theme
+  - The default theme for the extension.
+*/
+.light-mode {
+  --background-primary: var(--neutral-0);
+  --background-secondary: var(--neutral-100);
+  --text-primary: var(--neutral-800);
+  --text-secondary: var(--neutral-700);
+  --border-color: var(--neutral-200);
+}
+
+/*
+  Dark Mode Theme
+  - Activated by a class on the body or root element.
+*/
+.dark-mode {
+  --background-primary: var(--neutral-900);
+  --background-secondary: var(--neutral-800);
+  --text-primary: var(--neutral-100);
+  --text-secondary: var(--neutral-300);
+  --border-color: var(--neutral-700);
+}

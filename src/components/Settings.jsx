@@ -6,28 +6,30 @@ const Settings = () => {
 
   const handleReset = () => {
     if (resetConfirm) {
-      chrome.storage.local.set({ websiteActivity: {} })
-      setResetConfirm(false)
+      chrome.storage.local.set({ websiteActivity: {} }, () => {
+        console.log('Website activity has been reset.');
+        setResetConfirm(false);
+      });
     } else {
-      setResetConfirm(true)
-      setTimeout(() => setResetConfirm(false), 3000)
+      setResetConfirm(true);
+      setTimeout(() => setResetConfirm(false), 3000); // Reset after 3 seconds
     }
   }
 
   return (
-    <div className="settings">
+    <main className="settings-content">
       <h2>Settings</h2>
       <div className="setting-item">
-        <h3>Reset Tracking Data</h3>
-        <p>This will delete all your tracked website data.</p>
+        <h3>Reset All Tracking Data</h3>
+        <p>This action is irreversible and will permanently delete all of your tracked website activity.</p>
         <button 
           onClick={handleReset}
-          className={resetConfirm ? 'confirm' : ''}
+          className={`reset-button ${resetConfirm ? 'confirm' : ''}`}
         >
-          {resetConfirm ? 'Click again to confirm' : 'Reset Data'}
+          {resetConfirm ? 'Click Again to Confirm' : 'Reset All Data'}
         </button>
       </div>
-    </div>
+    </main>
   )
 }
 

@@ -1,21 +1,27 @@
-import { useEffect, useState } from 'react'
 import ActivityChart from './ActivityChart'
 import DomainList from './DomainList'
 import StatsCard from './StatsCard'
 import useActivityData from '../hooks/useActivityData'
+import '../assets/styles/dashboard.css'
 
 const Dashboard = () => {
   const { activityData, totalTime, isLoading } = useActivityData()
-  const [chartType, setChartType] = useState('pie')
 
-  if (isLoading) return <div className="loading">Loading data...</div>
+  if (isLoading) {
+    return <div className="loading">Loading data...</div>
+  }
+
+  // Calculate stats
+  const totalHours = Math.floor(totalTime / 3600);
+  const totalMinutes = Math.floor((totalTime % 3600) / 60);
+  const formattedTime = `${totalHours}h ${totalMinutes}m`;
 
   return (
-    <div className="dashboard">
-      <div className="stats-row">
+    <main className="dashboard-content">
+      <div className="stats-grid">
         <StatsCard 
-          title="Total Tracked Time" 
-          value={`${Math.floor(totalTime / 60)}h ${totalTime % 60}m`} 
+          title="Total Time Tracked"
+          value={formattedTime}
         />
         <StatsCard 
           title="Websites Tracked" 
@@ -23,26 +29,11 @@ const Dashboard = () => {
         />
       </div>
       
-      <div className="chart-controls">
-        <button 
-          onClick={() => setChartType('pie')} 
-          className={chartType === 'pie' ? 'active' : ''}
-        >
-          Pie Chart
-        </button>
-        <button 
-          onClick={() => setChartType('bar')} 
-          className={chartType === 'bar' ? 'active' : ''}
-        >
-          Bar Chart
-        </button>
-      </div>
-      
-      <ActivityChart data={activityData} chartType={chartType} />
+      <ActivityChart data={activityData} />
       
       <DomainList data={activityData} />
-    </div>
+    </main>
   )
 }
 
-export default Dashboard
+export default Dashboard;

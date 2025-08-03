@@ -1,0 +1,15 @@
+/*
+  ChronoWeb - Dashboard Layout Styles
+*/
+.dashboard-content {
+  padding: var(--space-4);
+  flex-grow: 1;
+  overflow-y: auto; /* Allow content to scroll if it overflows */
+}
+
+.stats-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--space-4);
+  margin-bottom: var(--space-6);
+}

@@ -1,53 +1,57 @@
-import { PieChart, Pie, BarChart, Bar, XAxis, YAxis, Tooltip, Legend, Cell, ResponsiveContainer } from 'recharts'
+import { PieChart, Pie, Tooltip, Cell, ResponsiveContainer, Legend } from 'recharts'
 import '../assets/styles/charts.css'
 
-const ActivityChart = ({ data, chartType = 'pie' }) => {
-  const COLORS = ['#0088FE', '#00C49F', '#FFBB28', '#FF8042', '#8884D8']
+// A more modern and accessible color palette
+const CHART_COLORS = ['#007aff', '#ff9500', '#34c759', '#ff3b30', '#5856d6', '#ff2d55'];
 
-  // For displaying custom legend
-  const renderCustomLegend = (data) => (
-    <ul className="custom-legend">
-      {data.map((entry, index) => (
-        <li key={`item-${index}`} style={{ color: COLORS[index % COLORS.length] }}>
-          <span className="dot" style={{ backgroundColor: COLORS[index % COLORS.length] }}></span>
-          {entry.name}: {((entry.value / total) * 100).toFixed(1)}%
-        </li>
-      ))}
-    </ul>
-  )
+const CustomTooltip = ({ active, payload }) => {
+  if (active && payload && payload.length) {
+    const { name, value } = payload[0].payload;
+    const total = payload[0].payload.total; // Assuming total is passed in data
+    const percent = total > 0 ? ((value / total) * 100).toFixed(1) : 0;
+    return (
+      <div className="custom-tooltip">
+        <p className="tooltip-label">{`${name}`}</p>
+        <p className="tooltip-value">{`${percent}% (${value} mins)`}</p>
+      </div>
+    );
+  }
+  return null;
+};
 
-  const total = data.reduce((sum, item) => sum + item.value, 0)
+const ActivityChart = ({ data }) => {
+  const totalTime = data.reduce((sum, item) => sum + item.value, 0);
+  const chartData = data.map(item => ({ ...item, total: totalTime }));
+
+  if (data.length === 0) {
+    return <div className="chart-empty">No activity data yet.</div>;
+  }
 
   return (
-    <div className="chart-container">
-      {chartType === 'pie' ? (
-        <>
-          <PieChart width={280} height={280}>
-            <Pie
-              data={data}
-              cx="50%"
-              cy="50%"
-              outerRadius={80}
-              fill="#8884d8"
-              dataKey="value"
-            >
-              {data.map((entry, index) => (
-                <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
-              ))}
-            </Pie>
-            <Tooltip />
-          </PieChart>
-          {renderCustomLegend(data)}
-        </>
-      ) : (
-        <BarChart width={300} height={280} data={data}>
-          <XAxis dataKey="name" />
-          <YAxis />
-          <Tooltip />
-          <Legend />
-          <Bar dataKey="value" fill="#8884d8" />
-        </BarChart>
-      )}
+    <div className="chart-wrapper">
+      <ResponsiveContainer width="100%" height={280}>
+        <PieChart>
+          <Pie
+            data={chartData}
+            cx="50%"
+            cy="50%"
+            outerRadius={100}
+            innerRadius={60} // Donut chart
+            fill="#8884d8"
+            dataKey="value"
+            paddingAngle={2}
+          >
+            {chartData.map((entry, index) => (
+              <Cell key={`cell-${index}`} fill={CHART_COLORS[index % CHART_COLORS.length]} />
+            ))}
+          </Pie>
+          <Tooltip content={<CustomTooltip />} />
+          <Legend
+            iconType="circle"
+            formatter={(value, entry) => <span style={{ color: 'var(--text-secondary)' }}>{value}</span>}
+          />
+        </PieChart>
+      </ResponsiveContainer>
     </div>
   )
 }
