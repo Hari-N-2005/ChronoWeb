@@ -103,9 +103,9 @@ function handleTabChange(tab) {
  * Checks the window focus and idle state to determine if tracking should be active.
  */
 function checkSystemState() {
-    // Set the detection interval to 15 seconds, as specified in the chrome.idle API docs.
-    chrome.idle.setDetectionInterval(15);
-  chrome.idle.queryState(15, (idleState) => {
+    // Set the detection interval to 60 seconds.
+    chrome.idle.setDetectionInterval(60);
+  chrome.idle.queryState(60, (idleState) => {
     chrome.windows.getCurrent((currentWindow) => {
       // Start tracking only if the user is active and the window is focused.
       if (idleState === 'active' && currentWindow.focused) {
