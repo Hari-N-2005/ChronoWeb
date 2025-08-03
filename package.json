@@ -4,12 +4,10 @@
   "version": "0.0.0",
   "type": "module",
   "scripts": {
-    "dev": "vite",                               
-    "preview": "vite preview",                     
-    "build:popup": "vite build",                   
-    "build:background": "cross-env BUILD_TARGET=background vite build", 
-    "build": "npm run build:popup && npm run build:background",         
-    "lint": "eslint ."                              
+    "dev": "vite",
+    "preview": "vite preview",
+    "build": "vite build",
+    "lint": "eslint ."
   },
   "dependencies": {
     "react": "^19.0.0",
