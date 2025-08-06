@@ -22,18 +22,18 @@
   }
   
   .chart-controls button:hover {
-    background: var(--accent-light);
+    background: darkgrey;
     border-color: var(--accent-hover);
   }
   
   .chart-controls button.active {
-    background: var(--accent-color);
+    background: rgb(139, 87, 9);
     color: white;
     border-color: var(--accent-color);
   }
   
   .chart-controls button.active:hover {
-    background: var(--accent-hover);
+    background: darkgray;
     border-color: var(--accent-hover);
   }
 

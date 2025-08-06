@@ -124,11 +124,11 @@
   }
   
   .nav-button:hover {
-    background-color: var(--accent-light);
-    color: var(--accent-hover);
+    background-color: darkgray;
+    border-bottom: 2px solid var(--accent-color);
   }
 
   body.dark-mode .nav-button:hover {
-    background-color: rgba(20, 184, 166, 0.2);
-    color: var(--accent-light);
+    background-color: rgb(80, 75, 75);
+    color: var(--header-text);
   }

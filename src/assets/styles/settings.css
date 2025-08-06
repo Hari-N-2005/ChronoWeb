@@ -15,7 +15,7 @@
   
   .setting-item button {
     padding: 8px 15px;
-    background: var(--accent-color);
+    background: #e73b28;
     color: white;
     border: none;
     border-radius: 4px;
@@ -24,13 +24,13 @@
   }
   
   .setting-item button.confirm {
-    background: #e74c3c;
+    background: #e73b28;
   }
   
   .setting-item button:hover {
-    background: var(--accent-hover);
+    background: rgb(155, 5, 5);
   }
   
   .setting-item button.confirm:hover {
-    background: #c0392b;
+    background: rgb(155, 5, 5);
   }
