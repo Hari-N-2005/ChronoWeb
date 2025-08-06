@@ -1,6 +1,9 @@
 :root {
     --primary-color: #4a6fa5;
     --secondary-color: #166088;
+    --accent-color: #14b8a6;        /* Teal accent - works in both modes */
+    --accent-hover: #0d9488;        /* Teal hover state */
+    --accent-light: #5eead4;        /* Light teal for subtle elements */
     --background-light: #f8f9fa;
     --text-light: #333;
     --background-dark: #1a1a2e;

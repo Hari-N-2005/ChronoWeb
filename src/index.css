@@ -2,6 +2,9 @@
 :root {
   --primary: #4a6fa5;
   --secondary: #166088;
+  --accent: #14b8a6;        /* Teal accent - works in both modes */
+  --accent-hover: #0d9488;  /* Teal hover state */
+  --accent-light: #5eead4;  /* Light teal for subtle elements */
   --background: #f8f9fa;
   --text: #333;
   --card-bg: #ffffff;
@@ -11,6 +14,9 @@
 .dark {
   --primary: #6d8cc0;
   --secondary: #1a7bb9;
+  --accent: #14b8a6;        /* Same teal - works perfectly in dark mode */
+  --accent-hover: #0d9488;  /* Same hover state */
+  --accent-light: #5eead4;  /* Light teal for dark mode accents */
   --background: #1a1a2e;
   --text: #f1f1f1;
   --card-bg: #16213e;
@@ -52,7 +58,7 @@ html, body {
 .extension-mode {
   width: 400px;
   height: 600px;
-  border: solid 10px rgb(3, 85, 67);
+  border: solid 3px rgb(3, 85, 67);
   box-sizing: border-box;
 }
 
@@ -60,7 +66,7 @@ html, body {
   width: 400px;
   height: 600px;
   padding: 0rem;
-  border: solid 10px rgb(3, 85, 67);
+  border: solid 3px rgb(3, 85, 67);
 }
 
 /* When in dev server */

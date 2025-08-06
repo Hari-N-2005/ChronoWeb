@@ -26,5 +26,6 @@
   }
   
   .domain-time {
-    color: var(--secondary-color);
+    color: var(--accent-color);
+    font-weight: 500;
   }

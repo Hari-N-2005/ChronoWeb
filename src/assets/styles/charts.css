@@ -13,16 +13,28 @@
   
   .chart-controls button {
     padding: 5px 15px;
-    border: 1px solid var(--primary-color);
+    border: 1px solid var(--accent-color);
     background: transparent;
-    color: var(--primary-color);
+    color: var(--accent-color);
     border-radius: 4px;
     cursor: pointer;
+    transition: all 0.3s ease;
+  }
+  
+  .chart-controls button:hover {
+    background: var(--accent-light);
+    border-color: var(--accent-hover);
   }
   
   .chart-controls button.active {
-    background: var(--primary-color);
-    color: yellow;
+    background: var(--accent-color);
+    color: white;
+    border-color: var(--accent-color);
+  }
+  
+  .chart-controls button.active:hover {
+    background: var(--accent-hover);
+    border-color: var(--accent-hover);
   }
 
   .custom-legend {

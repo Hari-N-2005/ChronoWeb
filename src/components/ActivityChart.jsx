@@ -2,7 +2,7 @@ import { PieChart, Pie, BarChart, Bar, XAxis, YAxis, Tooltip, Legend, Cell, Resp
 import '../assets/styles/charts.css'
 
 const ActivityChart = ({ data, chartType = 'pie' }) => {
-  const COLORS = ['#0088FE', '#00C49F', '#FFBB28', '#FF8042', '#8884D8']
+  const COLORS = ['#14b8a6', '#0088FE', '#00C49F', '#FFBB28', '#FF8042', '#8884D8']
 
   // For displaying custom legend
   const renderCustomLegend = (data) => (

@@ -124,9 +124,11 @@
   }
   
   .nav-button:hover {
-    background-color: rgba(255, 255, 255, 0.05);
+    background-color: var(--accent-light);
+    color: var(--accent-hover);
   }
 
   body.dark-mode .nav-button:hover {
-    background-color: rgba(255, 255, 255, 0.1);
+    background-color: rgba(20, 184, 166, 0.2);
+    color: var(--accent-light);
   }

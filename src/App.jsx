@@ -2,11 +2,13 @@ import { useState, useEffect, useRef } from 'react'
 import Dashboard from './components/Dashboard'
 import Header from './components/Header'
 import Settings from './components/Settings'
+import useChromeStorage from './hooks/useChromeStorage'
+import { DEFAULT_SETTINGS } from './utils/constants'
 import './App.css'
 
 function App() {
   const [view, setView] = useState('dashboard')
-  const [darkMode, setDarkMode] = useState(false)
+  const [darkMode, setDarkMode] = useChromeStorage('darkMode', DEFAULT_SETTINGS.darkMode)
   const popupRef = useRef(null)
 
   // Keep popup open logic
